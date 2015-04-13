@@ -18,26 +18,3 @@ function authDataCallback(authData) {
     console.log("User is logged out");
   }
 }
-
-// TODO: Move this out of this file eventually
-
-$(function(){
-  $('#loginButton').on('click', function(e) {
-    e.preventDefault();
-    authenticateWithGoogle();
-  });
-
-  $('#logoutButton').on('click', function(e) {
-    e.preventDefault();
-    ref.unauth();
-  });
-
-  ref.on("child_added", function(snapshot) {
-    console.log(snapshot.val());
-  }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-  });
-
-  ref.onAuth(authDataCallback);
-
-});

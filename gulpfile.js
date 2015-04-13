@@ -2,8 +2,7 @@ var gulp = require('gulp');
 
 var mainBowerFiles = require('main-bower-files'),
   inject = require('gulp-inject'),
-  sass = require('gulp-sass'),
-  es = require('event-stream');
+  sass = require('gulp-sass');
 
 var config = {
   sassDir: './scss',
