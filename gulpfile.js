@@ -1,43 +1,42 @@
 var gulp = require('gulp');
 
-var bowerFiles = require('main-bower-files'),
-    inject = require('gulp-inject'),
-    sass = require('gulp-sass'),
-    es = require('event-stream')
-    notify = require('gulp-notify');
+var mainBowerFiles = require('main-bower-files'),
+  inject = require('gulp-inject'),
+  sass = require('gulp-sass'),
+  es = require('event-stream');
 
 var config = {
   sassDir: './scss',
-  bowerDir: './bower_components' 
-}
+  bowerDir: './bower_components'
+};
 
-gulp.task('default', function() {
+gulp.task('default', ['bower-js','sass','custom-js']);
 
-  var cssFiles = gulp.src('./scss/*.scss')
+// Compile Sass files, move to CSS folder, inject css files into index.html
+gulp.task('sass', function() {
+  return gulp.src('./index.html')
+  .pipe(inject(
+    gulp.src(config.sassDir + '/*.scss')
     .pipe(sass())
-    .pipe(gulp.dest('./css'));
+    .pipe(gulp.dest('./css'))
+  ));
+});
 
-  gulp.src('./index.html')
+// Get Bower JavaScripts and inject them into index.html
+gulp.task('bower-js', function() {
+  return gulp.src('./index.html')
     .pipe(inject(
-      gulp.src(
-        bowerFiles('.js'), {read:false}
-      )
-    ), {name: 'bower'})
-
-    .pipe(inject(
-      es.merge(
-        cssFiles,
-        gulp.src('./js/*.js', {read: false})
-      )
+      gulp.src(mainBowerFiles(), {read: false}),
+      { name: 'bower' }
     ))
     .pipe(gulp.dest('.'));
 });
 
-gulp.task('sass', function() { 
-  return gulp.src(config.sassDir + '/*.scss')
-  .pipe(sass() 
-  .on("error", notify.onError(function (error) {
-    return "Error: " + error.message;
-  }))) 
-  .pipe(gulp.dest('./css')); 
+// Get Custom JavaScripts and inject them into index.html
+gulp.task('custom-js', function() {
+  return gulp.src('./index.html')
+    .pipe(inject(
+      gulp.src('./js/*.js', {read: false})
+    ))
+    .pipe(gulp.dest('.'));
 });
