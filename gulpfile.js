@@ -10,7 +10,7 @@ var config = {
   bowerDir: './bower_components'
 };
 
-gulp.task('default', ['bower-js','sass','custom-js']);
+gulp.task('default', ['custom-js']);
 
 // Compile Sass files, move to CSS folder, inject css files into index.html
 gulp.task('sass', function() {
@@ -19,11 +19,12 @@ gulp.task('sass', function() {
     gulp.src(config.sassDir + '/*.scss')
     .pipe(sass())
     .pipe(gulp.dest('./css'))
-  ));
+  ))
+  .pipe(gulp.dest('.'));
 });
 
 // Get Bower JavaScripts and inject them into index.html
-gulp.task('bower-js', function() {
+gulp.task('bower-js', ['sass'], function() {
   return gulp.src('./index.html')
     .pipe(inject(
       gulp.src(mainBowerFiles(), {read: false}),
@@ -33,7 +34,7 @@ gulp.task('bower-js', function() {
 });
 
 // Get Custom JavaScripts and inject them into index.html
-gulp.task('custom-js', function() {
+gulp.task('custom-js', ['bower-js'], function() {
   return gulp.src('./index.html')
     .pipe(inject(
       gulp.src('./js/*.js', {read: false})
