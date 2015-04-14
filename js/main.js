@@ -27,13 +27,22 @@ $(function(){
 
   ref.onAuth(authDataCallback);
 
-  // Add phrase button event handler
+  // ADD PHRASE BUTTON event handler
 
   $('#addPhrase').on('click', function(e) {
     e.preventDefault();
 
     var phrase = $('#phraseText').val();
     createNewPhrase(phrase);
+  });
+
+  // SEARCH PHRASE BUTTON event handler
+
+  $('#searchPhrase').on('click', function(e) {
+    e.preventDefault();
+
+    var phrase = $('#phraseText').val();
+    searchForPhrase(phrase);
   });
 
 });

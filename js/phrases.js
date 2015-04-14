@@ -1,5 +1,7 @@
 var ref = new Firebase("https://caniphrase.firebaseio.com/phrases");
 
+var currentPhrase;
+
 // GET a random phrase
 var getRandomPhrase = function() {
   // TODO: get 20 phrases with most votes? (sum of children's values?)
@@ -28,5 +30,10 @@ var getSomePhrases = function(i, j) {
 };
 
 var searchForPhrase = function(string) {
-  return false; // TODO: Search firebase, return object or false
+  var searchResult = ref.child(string);
+
+  searchResult.once("value", function(snapshot) {
+    console.log(snapshot.val());
+  });
+
 };
